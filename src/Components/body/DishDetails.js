@@ -1,5 +1,5 @@
 import dateFormat from "dateformat";
-import React, { useState } from "react";
+import React from "react";
 import {
   Card,
   CardImg,
@@ -14,22 +14,17 @@ import {
   ListGroupItemHeading,
   ListGroupItemText,
 } from "reactstrap";
+import CommentForm from "./CommentForm";
 
 
 
 const DishDetails = (props) => {
-  const [show, setShow] = useState(false);
 
-  const commentsToggle = () => {
-    setShow(!show);
-  };
 
-  let comments = "";
-  if (show) {
-    comments = props.comments.map((comment) => {
+  let comments = props.comments.map((comment) => {
       return (
-        <>
-          <ListGroupItem>
+        <div key={comment.id}>
+          <ListGroupItem >
             <ListGroupItemHeading>{comment.author}</ListGroupItemHeading>
             <ListGroupItemText>
               {comment.comment}
@@ -42,10 +37,10 @@ const DishDetails = (props) => {
             </ListGroupItemText>
           </ListGroupItem>
           <br />
-        </>
+        </div>
       );
     });
-  }
+  
 
   return (
     <div>
@@ -69,13 +64,15 @@ const DishDetails = (props) => {
       <br />
       <ListGroupItem
         className="justify-content-between"
-        onClick={commentsToggle} style={{cursor:"pointer"}}
+        style={{ cursor: "pointer" }}
       >
         Comments <Badge pill>{props.comments.length}</Badge>
       </ListGroupItem>
       <br />
 
       {comments}
+      <hr />
+       <CommentForm dishId = {props.id}/>
     </div>
   );
 };
