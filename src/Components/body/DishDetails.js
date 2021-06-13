@@ -72,7 +72,9 @@ const DishDetails = (props) => {
 
       {comments}
       <hr />
-       <CommentForm dishId = {props.id}/>
+       <CommentForm dishId = {props.id}
+                    addComment = {props.addComment}
+       />
     </div>
   );
 };
