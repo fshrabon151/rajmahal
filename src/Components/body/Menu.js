@@ -4,6 +4,7 @@ import { CardColumns, Button, ModalBody, ModalFooter, Modal } from "reactstrap";
 import DishDetails from "./DishDetails";
 import MenuItem from "./MenuItem";
 import { connect } from "react-redux";
+import { addComment } from "../../redux/actionCreators";
 
 const mapStateToProps = (state) => {
   return {
@@ -15,18 +16,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addComment: (dishId, author, rating, comment) =>
-      dispatch({
-        type: "ADD_COMMENT",
-        payload: {
-          dishId: dishId,
-          author: author,
-          rating: rating,
-          comment: comment,
-        },
-      }),
+      dispatch(addComment(dishId, author, rating, comment)),
   };
 };
-
 
 class Menu extends Component {
   state = {
@@ -63,7 +55,11 @@ class Menu extends Component {
         (comment) => comment.dishId === this.state.selectDishes.id
       );
       dishDetail = (
-        <DishDetails {...this.state.selectDishes} comments={comments} addComment={this.props.addComment} />
+        <DishDetails
+          {...this.state.selectDishes}
+          comments={comments}
+          addComment={this.props.addComment}
+        />
       );
     }
     return (
@@ -71,19 +67,15 @@ class Menu extends Component {
         <div className="row">
           <CardColumns>{menu}</CardColumns>
 
-          <Modal isOpen={this.state.modalOpen} >
+          <Modal isOpen={this.state.modalOpen}>
             <ModalBody>{dishDetail}</ModalBody>
             <ModalFooter>
               <Button onClick={this.toggleModal}>Close</Button>
             </ModalFooter>
           </Modal>
-
-          {/* <div className="col-8">{dishDetail}</div>
-          <div className="col-4">
-            {menu}</div> */}
         </div>
       </div>
     );
   }
 }
-export default connect(mapStateToProps,mapDispatchToProps) (Menu);
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);
